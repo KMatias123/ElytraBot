@@ -125,7 +125,7 @@ public class Settings {
 	public static void setValue(String name, Object value) {
 		for (int i = 0; i < SettingsInfo.Settings.size(); i++) {
 			SettingsInfo s = SettingsInfo.Settings.get(i);
-			if (s.name.toLowerCase().equals(name.toLowerCase())) {
+			if (s.name.equalsIgnoreCase(name)) {
 				Node n = Node.getNodeFromID(s.getName());
 				if (n.isTypeable()) {
 					n.setStringValue(String.valueOf(value));
@@ -157,7 +157,7 @@ public class Settings {
 	public static double getDouble(String name) {
 		for (int i = 0; i < SettingsInfo.Settings.size(); i++) {
 			SettingsInfo s = SettingsInfo.Settings.get(i);
-			if (s.name.toLowerCase().equals(name.toLowerCase())) {
+			if (s.name.equalsIgnoreCase(name)) {
 				return Double.parseDouble(String.valueOf(s.getValue()));
 			}
 		}
@@ -167,7 +167,7 @@ public class Settings {
 	public static String getString(String name) {
 		for (int i = 0; i < SettingsInfo.Settings.size(); i++) {
 			SettingsInfo s = SettingsInfo.Settings.get(i);
-			if (s.name.toLowerCase().equals(name.toLowerCase())) {
+			if (s.name.equalsIgnoreCase(name)) {
 				return String.valueOf(s.getValue());
 			}
 		}

@@ -34,17 +34,17 @@ public class Renderer extends GuiScreen {
 	//This renders the Status above your hotbar
 	@SubscribeEvent
 	public void render(RenderGameOverlayEvent.Text e) {
-		if (me.bebeli555.ElytraBot.Highway.Main.toggle == true) {
+		if (me.bebeli555.ElytraBot.Highway.Main.isEnabled) {
 			mc.fontRenderer.drawString(ChatFormatting.RED + "ElytraBot Status: " + ChatFormatting.BLUE + me.bebeli555.ElytraBot.Highway.Main.status, 390, 475, 0xffff);
-		} else if (me.bebeli555.ElytraBot.Highway.Main.baritonetoggle == true) {
+		} else if (me.bebeli555.ElytraBot.Highway.Main.baritoneToggle) {
 			mc.fontRenderer.drawString(ChatFormatting.RED + "ElytraBot Status: " + ChatFormatting.BLUE + "Using baritone to overcome obstacle", 390, 475, 0xffff);
-		} else if (me.bebeli555.ElytraBot.Settings.AutoRepair.AutoRepair == true) {
+		} else if (me.bebeli555.ElytraBot.Settings.AutoRepair.AutoRepair) {
 			mc.fontRenderer.drawString(ChatFormatting.RED + "ElytraBot Status: " + ChatFormatting.BLUE + "Repairing Elytra", 390, 475, 0xffff);
-		} else if (me.bebeli555.ElytraBot.Settings.Diagonal.toggle == true) {
+		} else if (me.bebeli555.ElytraBot.Settings.Diagonal.isEnabled) {
 			mc.fontRenderer.drawString(ChatFormatting.RED + "ElytraBot Status: " + ChatFormatting.BLUE + me.bebeli555.ElytraBot.Settings.Diagonal.status, 390, 475, 0xffff);
-		} else if (me.bebeli555.ElytraBot.Settings.Diagonal.baritonetoggle == true) {
+		} else if (me.bebeli555.ElytraBot.Settings.Diagonal.baritonetoggle) {
 			mc.fontRenderer.drawString(ChatFormatting.RED + "ElytraBot Status: " + ChatFormatting.BLUE + "Using baritone to overcome obstacle", 390, 475, 0xffff);
-		} else if (me.bebeli555.ElytraBot.Overworld.Main.toggle == true) {
+		} else if (Main.toggle) {
 			String Seconds = ChatFormatting.GOLD + " Seconds: ";
 			String Minutes = ChatFormatting.GOLD + " Minutes: ";
 			String Hours = ChatFormatting.GOLD + "Hours: ";

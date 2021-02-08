@@ -102,7 +102,7 @@ public class GetPath {
 		Gui.TurnOff();
 		mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.GREEN + "Yay we reached the destination!"));
 		//Play epic anvil destroy sound!
-		if (Settings.getBoolean("OverworldLog") == false) {
+		if (!Settings.getBoolean("OverworldLog")) {
 			BlockPos Player = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 			mc.world.playSound(Player, SoundEvents.BLOCK_ANVIL_DESTROY, SoundCategory.AMBIENT, 100.0f, -5.0F, true);
 		}

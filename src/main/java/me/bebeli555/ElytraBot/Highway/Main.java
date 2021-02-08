@@ -20,7 +20,7 @@ import baritone.api.BaritoneAPI;
 public class Main {
 	//Variables are cool!
 	static Minecraft mc = Minecraft.getMinecraft();
-	public static boolean toggle = false;
+	public static boolean isEnabled = false;
 	public static EnumFacing direction;
 	public static int StartupPosX;
 	public static int StartupPosZ;
@@ -31,7 +31,7 @@ public class Main {
 	static boolean mine = false;
 	static int okposx;
 	static int okposz;
-	public static boolean baritonetoggle = false;
+	public static boolean baritoneToggle = false;
 	public static boolean MoveRight = false;
 	public static boolean MoveStraight = false;
 	public static boolean MoveOn = false;
@@ -69,7 +69,7 @@ public class Main {
 			// uses baritone if the player is stuck...
 			UseBaritoneSetting();
 
-			if (toggle == true) {
+			if (isEnabled == true) {
 				MoveOn = false;
 				
 				if (takeoff == false) {
@@ -80,9 +80,9 @@ public class Main {
 						if (Settings.getBoolean("UseBaritone") == true) {
 							delay18++;
 							if (delay18 > 400) {
-								baritonetoggle = true;
+								baritoneToggle = true;
 								lmao5 = false;
-								toggle = false;
+								isEnabled = false;
 								delay18 = 0;
 							}
 						}
@@ -97,11 +97,11 @@ public class Main {
 
 						if (mc.world.getBlockState(Check).getBlock() == Blocks.BEDROCK) {
 							if (Settings.getBoolean("UseBaritone") == true) {
-								baritonetoggle = true;
+								baritoneToggle = true;
 								lmao5 = false;
-								toggle = false;
+								isEnabled = false;
 							} else {
-								toggle = false;
+								isEnabled = false;
 								UnCheck();
 								mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.RED + "Were stuck... UseBaritone setting would help!"));
 							}
@@ -402,7 +402,7 @@ public class Main {
 	}
 
 	public static void NoUsebaritoneMessage() {
-		toggle = false;
+		isEnabled = false;
 		UnCheck();
 		Gui.TurnOff();
 		mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.RED + "Were stuck... UseBaritone setting would help!"));
@@ -413,7 +413,7 @@ public class Main {
 		x = false;
 		z = false;
 		takeoff = false;
-		baritonetoggle = false;
+		baritoneToggle = false;
 		me.bebeli555.ElytraBot.Settings.AutoRepair.AutoRepair = false;
 	}
 
@@ -569,13 +569,13 @@ public class Main {
 	}
 	
 	public static void ActivateUseBaritone() {
-		baritonetoggle = true;
+		baritoneToggle = true;
 		lmao5 = false;
-		toggle = false;
+		isEnabled = false;
 	}
 	
 	public static void UseBaritoneSetting() {
-		if (baritonetoggle == true) {
+		if (baritoneToggle == true) {
 			TakeOff.ActivatePacketFly = false;
 			if (mc.player.onGround == true) {
 				//Walks 35 blocks straight with baritone if player is stuck and then continues flying
@@ -591,8 +591,8 @@ public class Main {
 				} else if (bdelay2 > 50) {
 					if ((int) mc.player.posX == okposx) {
 						if ((int) mc.player.posZ == okposz) {
-							baritonetoggle = false;
-							toggle = true;
+							baritoneToggle = false;
+							isEnabled = true;
 							bdelay2 = 0;
 							mc.player.sendChatMessage("#cancel");
 							lmao5 = false;

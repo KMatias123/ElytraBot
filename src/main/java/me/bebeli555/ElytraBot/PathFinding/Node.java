@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import net.minecraft.util.math.BlockPos;
 
 public class Node {
-	public static ArrayList<Node> Nodes = new ArrayList<Node>();
+	public static ArrayList<Node> Nodes = new ArrayList<>();
 	private BlockPos node;
 	private BlockPos parent;
 	private double cost;

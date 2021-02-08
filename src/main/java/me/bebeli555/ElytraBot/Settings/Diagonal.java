@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class Diagonal {
-	public static boolean toggle = false;
+	public static boolean isEnabled = false;
 	public static EnumFacing direction;
 	public static Minecraft mc = Minecraft.getMinecraft();
 	public static boolean baritonetoggle = false;
@@ -59,7 +59,7 @@ public class Diagonal {
 						if ((int) mc.player.posX == okposx) {
 							if ((int) mc.player.posZ == okposz) {
 								baritonetoggle = false;
-								toggle = true;
+								isEnabled = true;
 								bdelay2 = 0;
 								mc.player.sendChatMessage("#cancel");
 								takeoff = false;
@@ -74,7 +74,7 @@ public class Diagonal {
 				}
 			}
 			//End of baritone setting
-			if (toggle == true) {
+			if (isEnabled == true) {
 				
 				// Activate baritone support if player is stuck
 				if (status == "Going Straight") {
@@ -89,7 +89,7 @@ public class Diagonal {
 								delay21 = 0;
 								baritonetoggle = true;
 								lmao5 = false;
-								toggle = false;
+								isEnabled = false;
 							}
 						}
 
@@ -106,7 +106,7 @@ public class Diagonal {
 						if (Settings.getBoolean("UseBaritone")) {
 							baritonetoggle = true;
 							lmao5 = false;
-							toggle = false;
+							isEnabled = false;
 							delay18 = 0;
 						}
 					}
@@ -120,9 +120,9 @@ public class Diagonal {
 							if (Settings.getBoolean("UseBaritone")) {
 								baritonetoggle = true;
 								lmao5 = false;
-								toggle = false;
+								isEnabled = false;
 							} else {
-								toggle = false;
+								isEnabled = false;
 								UnCheck();
 								mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.RED + "Were stuck... UseBaritone setting would help!"));
 							}
@@ -182,7 +182,7 @@ public class Diagonal {
 	}
 	
 	public static void UnCheck() {
-		toggle = false;
+		isEnabled = false;
 		baritonetoggle = false;
 		Yaw = 0;
 		takeoff = false;

@@ -18,13 +18,13 @@ public class ElytraFly {
 		double flySpeed = Settings.getDouble("Speed");
 		double glideSpeed = Settings.getDouble("GlideSpeed");
 		
-		if (Main.toggle == true) {
+		if (Main.isEnabled == true) {
 			if (Main.MoveOn == true) {
 				Main.Flight((flySpeed) - FlyMinus, Main.MoveRight, Main.MoveStraight, -(glideSpeed / 10000f));
 			}
 		}
 		
-		if (Diagonal.toggle == true) {
+		if (Diagonal.isEnabled == true) {
 			if (Diagonal.MoveOn == true) {
 				Diagonal.Flight(Diagonal.MoveRight, Diagonal.MoveStraight, -(glideSpeed / 10000f));
 			}
@@ -38,11 +38,11 @@ public class ElytraFly {
 	}
 	
 	public static boolean IsElytrabotOn() {
-		if (Main.toggle == true) {
+		if (Main.isEnabled == true) {
 			return true;
 		}
 		
-		if (Diagonal.toggle == true) {
+		if (Diagonal.isEnabled == true) {
 			return true;
 		}
 		

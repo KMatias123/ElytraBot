@@ -50,11 +50,11 @@ public class AutoEat {
 	
 	//Check if elytrabot is activated
 	public static boolean IsElytrabotEnabled() {
-		if (Main.toggle == true) {
+		if (Main.isEnabled == true) {
 			return true;
-		} else if (Diagonal.toggle == true) {
+		} else if (Diagonal.isEnabled == true) {
 			return true;
-		} else if (Main.baritonetoggle == true) {
+		} else if (Main.baritoneToggle == true) {
 			return true;
 		} else if (Diagonal.baritonetoggle == true) {
 			return true;

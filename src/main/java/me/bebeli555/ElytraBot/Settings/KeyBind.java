@@ -10,21 +10,23 @@ public class KeyBind {
 	
 	@SubscribeEvent
 	public void onKeyPress(InputEvent.KeyInputEvent event) {
-		int Key;
-		
-		Key = Keyboard.getKeyIndex(Settings.getString("KeybindGUI"));
-		if (Keyboard.isKeyDown(Key)) {
-			Commands.GuiON = true;
-		}
+		if (Keyboard.getEventKey() != Keyboard.CHAR_NONE) {
+			int Key;
 
-		Key = Keyboard.getKeyIndex(Settings.getString("KeybindStart"));
-		if (Keyboard.isKeyDown(Key)) {
-			Gui.TurnOn();
-		}
+			Key = Keyboard.getKeyIndex(Settings.getString("KeybindGUI"));
+			if (Keyboard.isKeyDown(Key)) {
+				Commands.GuiON = true;
+			}
 
-		Key = Keyboard.getKeyIndex(Settings.getString("KeybindStop"));
-		if (Keyboard.isKeyDown(Key)) {
-			Gui.TurnOff();
+			Key = Keyboard.getKeyIndex(Settings.getString("KeybindStart"));
+			if (Keyboard.isKeyDown(Key)) {
+				Gui.TurnOn();
+			}
+
+			Key = Keyboard.getKeyIndex(Settings.getString("KeybindStop"));
+			if (Keyboard.isKeyDown(Key)) {
+				Gui.TurnOff();
+			}
 		}
 	}
 }

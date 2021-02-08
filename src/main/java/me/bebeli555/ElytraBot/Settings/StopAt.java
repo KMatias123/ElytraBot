@@ -26,7 +26,7 @@ public class StopAt {
 	public void onUpdate(LivingUpdateEvent e) {
 		double X = Settings.getDouble("StopAtX");
 		double Z = Settings.getDouble("StopAtZ");
-		if (Main.toggle == true || Diagonal.toggle == true) {
+		if (Main.isEnabled == true || Diagonal.isEnabled == true) {
 			if (X != -1) {
 				toggle = true;
 			} else if (Z != -1) {
