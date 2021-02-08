@@ -13,7 +13,7 @@ public class AStar {
 
     static Minecraft mc = Minecraft.getMinecraft();
 
-    static ArrayList<BlockPos> Open = new ArrayList<>();
+    static ArrayList<BlockPos> openBLockPositions = new ArrayList<>();
     public static ArrayList<BlockPos> Closed = new ArrayList<>();
     public static ArrayList<BlockPos> FinalPath = new ArrayList<>();
     public static ArrayList<BlockPos> LeftGaps = new ArrayList<>();
@@ -30,16 +30,17 @@ public class AStar {
         Main.status = "Calculating Path";
         Start = start;
         Goal = goal;
-        BlockPos Player = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
+        BlockPos playerBlockPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 
         // Add startup pos to Open list if its empty
-        if (Open.isEmpty()) {
-            Closed.add(Player);
-            AddToOpen(Player, IgnoreAirNextToSolid, false);
+        if (openBLockPositions.isEmpty()) {
+            Closed.add(playerBlockPos);
+            AddToOpen(playerBlockPos, IgnoreAirNextToSolid, false);
         }
 
+        // why is there 2 variables with the same value
         if (Current == null) {
-            Current = Player;
+            Current = playerBlockPos;
         }
 
         // Get the best path using A*
@@ -53,17 +54,16 @@ public class AStar {
             }
             // Get the lowest F cost in open list and put that to closed list
             int LowestF = Integer.MAX_VALUE;
-            for (BlockPos blockPos : Open) {
+            for (BlockPos blockPos : openBLockPositions) {
                 if (FCost(blockPos) < LowestF) {
                     LowestF = FCost(blockPos);
                     Current = blockPos;
                 }
             }
-            LowestF = Integer.MAX_VALUE;
 
             // Add them to the list and stuff
             Closed.add(Current);
-            Open.remove(Current);
+            openBLockPositions.remove(Current);
             AddToOpen(Current, IgnoreAirNextToSolid, HighwayMode);
 
             //Closest
@@ -84,7 +84,7 @@ public class AStar {
                 }
             }
         }
-        return new ArrayList<BlockPos>();
+        return new ArrayList<>();
     }
 
     // Calculates the F cost of the put blockposition
@@ -104,31 +104,31 @@ public class AStar {
 
     // Add the surrounding blocks to the open list IF their clear
     public static void AddToOpen(BlockPos Pos, boolean IgnoreAirNextToSolid, boolean Highway) {
-        ArrayList<BlockPos> OpenPositions = new ArrayList<BlockPos>();
-        OpenPositions.add(new BlockPos(Pos.add(1, 0, 0)));
-        OpenPositions.add(new BlockPos(Pos.add(-1, 0, 0)));
-        OpenPositions.add(new BlockPos(Pos.add(0, 0, 1)));
-        OpenPositions.add(new BlockPos(Pos.add(0, 0, -1)));
+        ArrayList<BlockPos> openPositions = new ArrayList<>();
+        openPositions.add(new BlockPos(Pos.add(1, 0, 0)));
+        openPositions.add(new BlockPos(Pos.add(-1, 0, 0)));
+        openPositions.add(new BlockPos(Pos.add(0, 0, 1)));
+        openPositions.add(new BlockPos(Pos.add(0, 0, -1)));
 
-        for (int i = 0; i < OpenPositions.size(); i++) {
-            if (!GetPath.IsSolid(OpenPositions.get(i))) {
-                if (!Closed.contains(OpenPositions.get(i))) {
-                    if (GetPath.IsBlockInRenderDistance(OpenPositions.get(i))) {
+        for (BlockPos openPosition : openPositions) {
+            if (!GetPath.IsSolid(openPosition)) {
+                if (!Closed.contains(openPosition)) {
+                    if (GetPath.IsBlockInRenderDistance(openPosition)) {
                         //Set parents
-                        double value = FCost(OpenPositions.get(i));
-                        Node n = Node.GetNodeFromBlockpos(OpenPositions.get(i));
+                        double value = FCost(openPosition);
+                        Node n = Node.GetNodeFromBlockpos(openPosition);
                         if (n == null) {
-                            n = new Node(OpenPositions.get(i));
+                            n = new Node(openPosition);
                         }
 
-                        if (!Open.contains(OpenPositions.get(i))) {
+                        if (!openBLockPositions.contains(openPosition)) {
                             n.SetCost(value);
                             n.SetParent(Current);
 
                             if (Highway && LeaveGap) {
-                                if (ShouldLeaveAsGap(OpenPositions.get(i))) {
-                                    if (!LeftGaps.contains(OpenPositions.get(i))) {
-                                        LeftGaps.add(OpenPositions.get(i));
+                                if (ShouldLeaveAsGap(openPosition)) {
+                                    if (!LeftGaps.contains(openPosition)) {
+                                        LeftGaps.add(openPosition);
                                     }
                                 }
 
@@ -138,14 +138,14 @@ public class AStar {
                             }
 
                             if (IgnoreAirNextToSolid) {
-                                if (!HasBlockAround(OpenPositions.get(i))) {
-                                    Open.add(OpenPositions.get(i));
+                                if (!HasBlockAround(openPosition)) {
+                                    openBLockPositions.add(openPosition);
                                 }
                             }
 
                             if (Highway) {
-                                if (!LeftGaps.contains(OpenPositions.get(i))) {
-                                    Open.add(OpenPositions.get(i));
+                                if (!LeftGaps.contains(openPosition)) {
+                                    openBLockPositions.add(openPosition);
                                 }
                             }
                         } else {
@@ -239,7 +239,7 @@ public class AStar {
     }
 
     public static void Reset() {
-        Open.clear();
+        openBLockPositions.clear();
         Closed = new ArrayList<BlockPos>();
         FinalPath = new ArrayList<BlockPos>();
         LeftGaps.clear();

@@ -69,15 +69,15 @@ public class Main {
 			// uses baritone if the player is stuck...
 			UseBaritoneSetting();
 
-			if (isEnabled == true) {
+			if (isEnabled) {
 				MoveOn = false;
 				
-				if (takeoff == false) {
+				if (!takeoff) {
 					status = "Attempting to TakeOff";
 
 					// Baritone backup for takeoff
 					if (status == "Attempting to TakeOff") {
-						if (Settings.getBoolean("UseBaritone") == true) {
+						if (Settings.getBoolean("UseBaritone")) {
 							delay18++;
 							if (delay18 > 400) {
 								baritoneToggle = true;
@@ -90,13 +90,13 @@ public class Main {
 						delay18 = 0;
 					}
 
-					if (mc.player.onGround == true) {
+					if (mc.player.onGround) {
 						// Activate baritone if above block is bedrock
 						BlockPos playerPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 						BlockPos Check = playerPos.add(0, 2, 0);
 
 						if (mc.world.getBlockState(Check).getBlock() == Blocks.BEDROCK) {
-							if (Settings.getBoolean("UseBaritone") == true) {
+							if (Settings.getBoolean("UseBaritone")) {
 								baritoneToggle = true;
 								lmao5 = false;
 								isEnabled = false;
@@ -116,10 +116,10 @@ public class Main {
 					BlockPos CheckM = playerPos.add(0, 2, 0);
 					BlockPos CheckM2 = playerPos.add(1, 2, 0);
 					BlockPos CheckM3 = playerPos.add(-1, 2, 0);
-					if (mc.player.onGround == true) {
-						if (mine == false) {
+					if (mc.player.onGround) {
+						if (!mine) {
 							if (GetPick() != -1) {
-								if (x == true) {
+								if (x) {
 									if (mc.world.getBlockState(Check).getBlock() == Blocks.NETHERRACK) {
 										mine = true;
 									} else if (mc.world.getBlockState(Check2).getBlock() == Blocks.NETHERRACK) {
@@ -127,7 +127,7 @@ public class Main {
 									} else if (mc.world.getBlockState(Check3).getBlock() == Blocks.NETHERRACK) {
 										mine = true;
 									}
-								} else if (z == true) {
+								} else if (z) {
 									if (mc.world.getBlockState(CheckM).getBlock() == Blocks.NETHERRACK) {
 										mine = true;
 									} else if (mc.world.getBlockState(CheckM2).getBlock() == Blocks.NETHERRACK) {
@@ -140,12 +140,12 @@ public class Main {
 						}
 					}
 
-					if (mine == false) {
+					if (!mine) {
 						TakeOff.TakeOffMethod(false, Settings.getBoolean("PacketFly"), Settings.getBoolean("SlowGlide"));
 					} else {
 						// Mines block above head
 						delay72++;
-						if (x == true) {
+						if (x) {
 							if (delay72 == 3) {
 								mc.player.inventory.currentItem = GetPick();
 								mc.player.rotationYaw = 0;
@@ -171,7 +171,7 @@ public class Main {
 								mine = false;
 								delay72 = 0;
 							}
-						} else if (z == true) {
+						} else if (z) {
 							if (delay72 == 3) {
 								mc.player.inventory.currentItem = GetPick();
 								mc.player.rotationYaw = 0;
@@ -212,7 +212,7 @@ public class Main {
 					
 					// Y Center go up
 					if (Settings.getDouble("PrefY") == -1) {
-						if (Center.IsYCentered() == false && mc.player.isElytraFlying() && TakeOff.IsClearToCenter()) {
+						if (!Center.IsYCentered() && mc.player.isElytraFlying() && TakeOff.IsClearToCenter()) {
 							delay5++;
 							if (delay5 > 25) {
 								TakeOff.YCenter();
@@ -270,7 +270,7 @@ public class Main {
 					}
 					
 					//Stay still for moment if stuck.
-					if (StayStill == true) {
+					if (StayStill) {
 						SetMotion(0, -(Settings.getDouble("GlideSpeed") / 10000f), 0);
 						delay51++;
 						if (delay51 > 20) {
@@ -280,7 +280,7 @@ public class Main {
 					}
 
 					// Control elytrafly
-					if (CantContinue == false) {
+					if (!CantContinue) {
 						Main.MoveOn = true;
 						ElytraFly.FlyMinus = 0;
 						if (message.contains("Forward")) {

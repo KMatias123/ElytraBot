@@ -103,45 +103,36 @@ public class Renderer extends GuiScreen {
 	
 	@SubscribeEvent
 	public void RenderPath(RenderWorldLastEvent e) {
-		IsRendering = true;
-		if (IsRendering == true) {
-			try {
-				for (int i = 0; i < PositionsYellow.size(); i++) {
-					BlockPos BlockPos4 = new BlockPos(PositionsYellow.get(i));
-					final AxisAlignedBB Axis = GetAxis(BlockPos4);
-					DrawPathBox(Axis, 0f, 0f, 1f, 1f, false, true);
-				}
-
-				for (int i = 0; i < PositionsGreen.size(); i++) {
-					BlockPos BlockPos4 = new BlockPos(PositionsGreen.get(i));
-					final AxisAlignedBB Axis = GetAxis(BlockPos4);
-					DrawPathBox(Axis, 0f, 0f, 1f, 1f, true, false);
-				}
-			} catch (Exception e22) {
-
+		try {
+			for (BlockPos blockPos : PositionsYellow) {
+				BlockPos BlockPos4 = new BlockPos(blockPos);
+				final AxisAlignedBB alignedBB = GetAxis(BlockPos4);
+				DrawPathBox(alignedBB, 0.5f, 0.5f, 0f, 0.5f);
 			}
+
+			for (BlockPos blockPos : PositionsGreen) {
+				BlockPos BlockPos4 = new BlockPos(blockPos);
+				final AxisAlignedBB alignedBB = GetAxis(BlockPos4);
+				DrawPathBox(alignedBB, 0f, 1f, 0f, 0.5f);
+			}
+		} catch (Exception e22) {
+			e22.printStackTrace();
 		}
 	}
 	
-    public static void DrawPathBox(AxisAlignedBB axisalignedbb, float red, float green, float blue, float alpha, boolean Green, boolean Yellow)
+    public static void DrawPathBox(AxisAlignedBB axisalignedbb, float red, float green, float blue, float alpha)
     {
         Tessellator ts = Tessellator.getInstance();
         BufferBuilder vb = ts.getBuffer();
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
         GlStateManager.disableDepth();
         GlStateManager.disableTexture2D();
         GlStateManager.depthMask(false);
-        if (Green == true) {
-        	//Green
-        	GL11.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-        } else if (Yellow == true){
-        	//Yellow
-        	GL11.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
-        } else {
-        	//Red
-        	GL11.glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-        }
+
+		GL11.glColor4f(red, green, blue, alpha);
+
         vb.begin(7, DefaultVertexFormats.POSITION_TEX);
         vb.pos(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ).color(red, green, blue, alpha).endVertex();
         vb.pos(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ).color(red, green, blue, alpha).endVertex();
@@ -205,18 +196,18 @@ public class Renderer extends GuiScreen {
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
         GlStateManager.enableTexture2D();
+        GlStateManager.disableAlpha();
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
     }
     
     public static AxisAlignedBB GetAxis(BlockPos BlockPos4) {
-		final AxisAlignedBB Axis = new AxisAlignedBB(
+		return new AxisAlignedBB(
 				BlockPos4.getX() - mc.getRenderManager().viewerPosX,
 				BlockPos4.getY() - mc.getRenderManager().viewerPosY,
 				BlockPos4.getZ() - mc.getRenderManager().viewerPosZ,
 				BlockPos4.getX() + 1 - mc.getRenderManager().viewerPosX,
 				BlockPos4.getY() - mc.getRenderManager().viewerPosY,
 				BlockPos4.getZ() + 1 - mc.getRenderManager().viewerPosZ);
-		return Axis;
     }
 }

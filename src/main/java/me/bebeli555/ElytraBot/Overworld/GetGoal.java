@@ -33,7 +33,7 @@ public class GetGoal {
 			Randoms = 0;
 		}
 
-		if (NoPath == true) {
+		if (NoPath) {
 			ArrayList<BlockPos> Check = AStar.GetPath(Start, Goal, 250, false, true);
 			Check = AStar.GetPath(Start, AStar.Closest, 350, false, true);
 			if (Check.size() > 35) {
