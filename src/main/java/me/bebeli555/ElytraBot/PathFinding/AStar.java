@@ -16,7 +16,7 @@ public class AStar {
     static ArrayList<BlockPos> openBLockPositions = new ArrayList<>();
     public static ArrayList<BlockPos> Closed = new ArrayList<>();
     public static ArrayList<BlockPos> FinalPath = new ArrayList<>();
-    public static ArrayList<BlockPos> LeftGaps = new ArrayList<>();
+    public static ArrayList<BlockPos> leftGaps = new ArrayList<>();
     public static BlockPos Closest;
     public static BlockPos Furthest;
     static BlockPos Start;
@@ -120,6 +120,10 @@ public class AStar {
                         if (n == null) {
                             n = new Node(openPosition);
                         }
+                        if (GetPath.IsSolid(openPosition.add(0, 1, 0))) {
+                            Closed.add(openPosition);
+                            return;
+                        }
 
                         if (!openBLockPositions.contains(openPosition)) {
                             n.SetCost(value);
@@ -127,12 +131,12 @@ public class AStar {
 
                             if (Highway && LeaveGap) {
                                 if (ShouldLeaveAsGap(openPosition)) {
-                                    if (!LeftGaps.contains(openPosition)) {
-                                        LeftGaps.add(openPosition);
+                                    if (!leftGaps.contains(openPosition)) {
+                                        leftGaps.add(openPosition);
                                     }
                                 }
 
-                                if (LeftGaps.size() > 1) {
+                                if (leftGaps.size() > 1) {
                                     LeaveGap = false;
                                 }
                             }
@@ -144,7 +148,7 @@ public class AStar {
                             }
 
                             if (Highway) {
-                                if (!LeftGaps.contains(openPosition)) {
+                                if (!leftGaps.contains(openPosition)) {
                                     openBLockPositions.add(openPosition);
                                 }
                             }
@@ -181,7 +185,7 @@ public class AStar {
 
     //Checks if this not solid block has any solid blocks around it.
     public static boolean HasBlockAround(BlockPos Pos) {
-        ArrayList<BlockPos> Positions = new ArrayList<BlockPos>();
+        ArrayList<BlockPos> Positions = new ArrayList<>();
         Positions.add(new BlockPos(Pos.add(1, 0, 0)));
         Positions.add(new BlockPos(Pos.add(-1, 0, 0)));
         Positions.add(new BlockPos(Pos.add(0, 0, 1)));
@@ -233,16 +237,15 @@ public class AStar {
                 FinalPath.add(n.GetParent());
                 n = Node.GetNodeFromBlockpos(n.GetParent());
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        } catch (NullPointerException ignored) {
         }
     }
 
     public static void Reset() {
         openBLockPositions.clear();
-        Closed = new ArrayList<BlockPos>();
-        FinalPath = new ArrayList<BlockPos>();
-        LeftGaps.clear();
+        Closed = new ArrayList<>();
+        FinalPath = new ArrayList<>();
+        leftGaps.clear();
         Node.Nodes.clear();
         Current = null;
         Final = null;

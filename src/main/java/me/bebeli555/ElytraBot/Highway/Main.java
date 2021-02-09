@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +17,8 @@ import me.bebeli555.ElytraBot.Gui.Gui;
 import me.bebeli555.ElytraBot.Settings.Settings;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import baritone.api.BaritoneAPI;
+
+import java.util.Random;
 
 public class Main {
 	//Variables are cool!
@@ -38,6 +41,8 @@ public class Main {
 	static int delay21 = 0;
 	public static int delay5 = 0;
 	static int bdelay2 = 0;
+	long screenShakeDelay = 0;
+	boolean screenShakePos = false;
 	static int barposx = 0;
 	static int barposz = 0;
 	public static int delay18 = 0;
@@ -56,12 +61,13 @@ public class Main {
 	public static double ManuverSpeed;
 
 	@SubscribeEvent
-	public void ServerLeave (PlayerLoggedOutEvent e) {
+	public void ServerLeave (PlayerLoggedOutEvent event) {
 		Gui.TurnOff();
+		isEnabled = false;
 	}
 	
 	@SubscribeEvent
-	public void onUpdate(TickEvent.ClientTickEvent e) {
+	public void onUpdate(TickEvent.ClientTickEvent event) {
 		try {
 			// Check if baritone is installed
 			CheckIfBaritoneIsInstalled();
@@ -76,18 +82,14 @@ public class Main {
 					status = "Attempting to TakeOff";
 
 					// Baritone backup for takeoff
-					if (status == "Attempting to TakeOff") {
-						if (Settings.getBoolean("UseBaritone")) {
-							delay18++;
-							if (delay18 > 400) {
-								baritoneToggle = true;
-								lmao5 = false;
-								isEnabled = false;
-								delay18 = 0;
-							}
+					if (Settings.getBoolean("UseBaritone")) {
+						delay18++;
+						if (delay18 > 400) {
+							baritoneToggle = true;
+							lmao5 = false;
+							isEnabled = false;
+							delay18 = 0;
 						}
-					} else {
-						delay18 = 0;
 					}
 
 					if (mc.player.onGround) {
@@ -209,6 +211,16 @@ public class Main {
 						status = "Waiting Chunks to load";
 						return;
 					}
+
+					if (screenShakeDelay < System.currentTimeMillis() - 5000) {
+						screenShakeDelay = System.currentTimeMillis();
+						if (screenShakePos) {
+							mc.getConnection().sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, 5, mc.player.onGround));
+						} else {
+							mc.getConnection().sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, 0, mc.player.onGround));
+						}
+					}
+
 					
 					// Y Center go up
 					if (Settings.getDouble("PrefY") == -1) {
@@ -312,6 +324,7 @@ public class Main {
 
 					// Set normal speed back backsafe
 					if (message.equals("Forward")) {
+						mc.player.rotationPitch = (float) (Math.random() * (5 - 2));
 						delay112++;
 						if (delay112 > 20) {
 							Settings.setValue("Speed", FlySpeed);
@@ -334,9 +347,8 @@ public class Main {
 					}
 				}
 			}
-		} catch (Exception e22) {
-			System.out.println("Exception in main class ElytraBot");
-			e22.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 		
@@ -420,7 +432,7 @@ public class Main {
 	//Flight method
 	public static void Flight(double speed, boolean right, boolean straight, double y) {
 		if (mc.player.isElytraFlying()) {
-			if (straight == true) {
+			if (straight) {
 				if (direction.equals(EnumFacing.NORTH)) {
 					SetMotion(0, y, -speed);
 				} else if (direction.equals(EnumFacing.WEST)) {
@@ -430,7 +442,7 @@ public class Main {
 				} else if (direction.equals(EnumFacing.SOUTH)) {
 					SetMotion(0, y, speed);
 				}
-			} else if (right == true) {
+			} else if (right) {
 				if (direction.equals(EnumFacing.NORTH)) {
 					SetMotion(ManuverSpeed, y, 0);
 				} else if (direction.equals(EnumFacing.WEST)) {
@@ -529,13 +541,13 @@ public class Main {
 	}
 	
 	public static void CheckBaritone() {
-		if (Settings.getBoolean("UseBaritone") == true) {
+		if (Settings.getBoolean("UseBaritone")) {
 			delay21++;
 			if (delay21 == 2) {
 				barposx = (int) mc.player.posX;
 				barposz = (int) mc.player.posZ;
 			}
-			if (x == true) {
+			if (x) {
 				if (delay21 > 100) {
 					if (barposz == (int) mc.player.posZ) {
 						ActivateUseBaritone();
@@ -544,7 +556,7 @@ public class Main {
 						delay21 = 0;
 					}
 				}
-			} else if (z == true) {
+			} else if (z) {
 				if (delay21 > 100) {
 					if (barposx == (int) mc.player.posX) {
 						ActivateUseBaritone();
@@ -559,7 +571,7 @@ public class Main {
 	}
 	
 	public static void CheckTakeoffBaritone() {
-		if (Settings.getBoolean("UseBaritone") == true) {
+		if (Settings.getBoolean("UseBaritone")) {
 			delay18++;
 			if (delay18 > 400) {
 				ActivateUseBaritone();
@@ -575,12 +587,12 @@ public class Main {
 	}
 	
 	public static void UseBaritoneSetting() {
-		if (baritoneToggle == true) {
+		if (baritoneToggle) {
 			TakeOff.ActivatePacketFly = false;
-			if (mc.player.onGround == true) {
+			if (mc.player.onGround) {
 				//Walks 35 blocks straight with baritone if player is stuck and then continues flying
 				bdelay2++;
-				if (lmao5 == false) {
+				if (!lmao5) {
 					useBaritone();
 					lmao5 = true;
 				}
@@ -608,13 +620,13 @@ public class Main {
 	}
 	
 	public static void CheckIfBaritoneIsInstalled() {
-		if (baritonecheck == false) {
+		if (!baritonecheck) {
 			baritonecheck = true;
 			try {
 				if (!BaritoneAPI.getProvider().getAllBaritones().isEmpty()) {
 					Settings.setValue("UseBaritone", true);
 				}
-			} catch (NoClassDefFoundError e5) {
+			} catch (NoClassDefFoundError ignored) {
 				
 			}
 		}

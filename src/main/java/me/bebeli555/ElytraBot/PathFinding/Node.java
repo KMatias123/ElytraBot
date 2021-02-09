@@ -16,6 +16,10 @@ public class Node {
 	public BlockPos GetParent() {
 		return parent;
 	}
+
+	public boolean hasParent() {
+		return parent == null;
+	}
 	
 	public void SetParent(BlockPos pos) {
 		this.parent = pos;

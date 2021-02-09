@@ -112,7 +112,7 @@ public class Center {
 	}
 	
 	public static boolean IsCentered(boolean Z) {
-		if (Z == true) {
+		if (Z) {
 			double Coord = Math.round(mc.player.posZ * 10) / 10.0;
 			String StringCoord = String.valueOf(Coord);
 			

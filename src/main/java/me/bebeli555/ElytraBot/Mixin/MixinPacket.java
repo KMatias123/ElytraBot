@@ -17,7 +17,7 @@ import net.minecraft.network.play.server.SPacketPlayerPosLook;
 
 @Mixin(NetworkManager.class)
 public class MixinPacket {
-	private Minecraft mc = Minecraft.getMinecraft();
+	private final Minecraft mc = Minecraft.getMinecraft();
 	
     @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
     private void SendPacket(Packet<?> packet2, CallbackInfo info) {

@@ -18,35 +18,35 @@ public class ElytraFly {
 		double flySpeed = Settings.getDouble("Speed");
 		double glideSpeed = Settings.getDouble("GlideSpeed");
 		
-		if (Main.isEnabled == true) {
-			if (Main.MoveOn == true) {
+		if (Main.isEnabled) {
+			if (Main.MoveOn) {
 				Main.Flight((flySpeed) - FlyMinus, Main.MoveRight, Main.MoveStraight, -(glideSpeed / 10000f));
 			}
 		}
 		
-		if (Diagonal.isEnabled == true) {
-			if (Diagonal.MoveOn == true) {
+		if (Diagonal.isEnabled) {
+			if (Diagonal.MoveOn) {
 				Diagonal.Flight(Diagonal.MoveRight, Diagonal.MoveStraight, -(glideSpeed / 10000f));
 			}
 		}
 		
-		if (me.bebeli555.ElytraBot.Overworld.Main.toggle == true) {
-			if (me.bebeli555.ElytraBot.Overworld.Main.MoveOn == true) {
+		if (me.bebeli555.ElytraBot.Overworld.Main.toggle) {
+			if (me.bebeli555.ElytraBot.Overworld.Main.MoveOn) {
 				me.bebeli555.ElytraBot.Overworld.Main.Flight((flySpeed) - FlyMinus, -(glideSpeed / 10000f), me.bebeli555.ElytraBot.Overworld.Main.MoveDirection);
 			}
 		}
 	}
 	
 	public static boolean IsElytrabotOn() {
-		if (Main.isEnabled == true) {
+		if (Main.isEnabled) {
 			return true;
 		}
 		
-		if (Diagonal.isEnabled == true) {
+		if (Diagonal.isEnabled) {
 			return true;
 		}
 		
-		if (me.bebeli555.ElytraBot.Overworld.Main.toggle == true) {
+		if (me.bebeli555.ElytraBot.Overworld.Main.toggle) {
 			return true;
 		}
 		

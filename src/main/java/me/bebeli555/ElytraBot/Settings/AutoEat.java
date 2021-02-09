@@ -22,8 +22,8 @@ public class AutoEat {
 	public void onUpdate(ClientTickEvent e) {
 		try {
 			if (IsElytrabotEnabled()) {
-				if (Settings.getBoolean("AutoEat") == true) {
-					if (ShouldActivate() == true) {
+				if (Settings.getBoolean("AutoEat")) {
+					if (ShouldActivate()) {
 						if (GetFood() != -1) {
 							delay++;
 							if (delay > 150) {
@@ -36,27 +36,27 @@ public class AutoEat {
 						}
 					} else {
 						// Just a thing that if the event messes up it wont eat all ur food
-						if (Stop == true) {
+						if (Stop) {
 							KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
 							Stop = false;
 						}
 					}
 				}
 			}
-		} catch (NullPointerException e69) {
+		} catch (NullPointerException ignored) {
 			
 		}
 	}
 	
 	//Check if elytrabot is activated
 	public static boolean IsElytrabotEnabled() {
-		if (Main.isEnabled == true) {
+		if (Main.isEnabled) {
 			return true;
-		} else if (Diagonal.isEnabled == true) {
+		} else if (Diagonal.isEnabled) {
 			return true;
-		} else if (Main.baritoneToggle == true) {
+		} else if (Main.baritoneToggle) {
 			return true;
-		} else if (Diagonal.baritonetoggle == true) {
+		} else if (Diagonal.baritonetoggle) {
 			return true;
 		}
 		return false;
@@ -103,8 +103,8 @@ public class AutoEat {
 	@SubscribeEvent
 	public void StopEating(LivingEntityUseItemEvent.Finish e) {
 		if (IsElytrabotEnabled()) {
-			if (Settings.getBoolean("AutoEat") == true) {
-				if (Stop == true) {
+			if (Settings.getBoolean("AutoEat")) {
+				if (Stop) {
 					KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
 				}
 			}

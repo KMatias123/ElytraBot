@@ -57,6 +57,7 @@ public class Settings {
 		new SettingsInfo("SlowGlide", true);
 		new SettingsInfo("SlowGlideSpeed", -0.025);
 		new SettingsInfo("PrefY", -1);
+		new SettingsInfo("9bAntiAfk", true);
 		
 		//OverWorld
 		new SettingsInfo("AutoSwitch", false);
@@ -95,7 +96,7 @@ public class Settings {
 					n.value = Double.parseDouble(String.valueOf(si.getValue()));
 				}
 			} else {
-				n.parent = Boolean.valueOf(String.valueOf(si.getValue()));
+				n.parent = Boolean.parseBoolean(String.valueOf(si.getValue()));
 			}
 		}	
 	}
@@ -108,8 +109,8 @@ public class Settings {
 				continue;
 			}
 			
-			if (n.isKeybind == true) {
-				if (n.stringValue == "0.0") {
+			if (n.isKeybind) {
+				if (n.stringValue.equals("0.0")) {
 					s.setValue("");
 				} else {
 					s.setValue(n.stringValue);
@@ -147,7 +148,7 @@ public class Settings {
 	
 	public static boolean getBoolean(String name) {
 		for (int i = 0; i < SettingsInfo.Settings.size(); i++) {
-			if (SettingsInfo.Settings.get(i).name.toLowerCase().equals(name.toLowerCase())) {
+			if (SettingsInfo.Settings.get(i).name.equalsIgnoreCase(name)) {
 				return Boolean.parseBoolean(String.valueOf(SettingsInfo.Settings.get(i).getValue()));
 			}
 		}

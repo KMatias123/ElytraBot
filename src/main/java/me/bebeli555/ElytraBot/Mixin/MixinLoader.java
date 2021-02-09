@@ -10,8 +10,9 @@ import org.spongepowered.asm.mixin.Mixins;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
+@IFMLLoadingPlugin.MCVersion("1.12.2")
+@IFMLLoadingPlugin.Name("ElytraBot")
 public class MixinLoader implements IFMLLoadingPlugin {
-
     public MixinLoader () {
         MixinBootstrap.init();
         Mixins.addConfiguration("mixins.elytrabot.json");

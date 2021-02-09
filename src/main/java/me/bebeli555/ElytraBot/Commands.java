@@ -17,14 +17,14 @@ public class Commands {
 
 	//Ingame commands.
 	@SubscribeEvent
-	public void ChatEvent(ClientChatEvent e) {
+	public void ChatEvent(ClientChatEvent event) {
 		String prefix = "++";
-		if (!e.getMessage().startsWith(prefix)) {
+		if (!event.getMessage().startsWith(prefix)) {
 			return;
 		}
-		String message = e.getMessage().replace(prefix, "");
+		String message = event.getMessage().replace(prefix, "");
 		String lowercase = message.toLowerCase();
-		e.setCanceled(true);
+		event.setCanceled(true);
 		
 		//Open GUI on ++GUI Command
 		if (lowercase.startsWith("gui") || lowercase.startsWith("open")) {
@@ -72,8 +72,8 @@ public class Commands {
 					if (Node.getNodeFromID(SettingsInfo.Settings.get(i).getName()) != null) {
 						mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + SettingsInfo.Settings.get(i).getName()));
 					}
-				} catch (Exception bebeli555) {
-					
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -109,7 +109,7 @@ public class Commands {
 					SettingsInfo s = SettingsInfo.Settings.get(i);
 					if (s.getName().toLowerCase().equals(settingName)) {
 						Settings.setValue(settingName, settingValue);
-						mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.GREEN + "Set " + ChatFormatting.GOLD + settingName + ChatFormatting.GREEN + "'s value to " + ChatFormatting.GOLD + String.valueOf(settingValue)));
+						mc.player.sendMessage(new TextComponentString(ChatFormatting.DARK_AQUA + "ElytraBot: " + ChatFormatting.GREEN + "Set " + ChatFormatting.GOLD + settingName + ChatFormatting.GREEN + "'s value to " + ChatFormatting.GOLD + settingValue));
 						return;
 					}
 				}

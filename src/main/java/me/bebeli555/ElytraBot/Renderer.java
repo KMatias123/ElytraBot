@@ -107,13 +107,13 @@ public class Renderer extends GuiScreen {
 			for (BlockPos blockPos : PositionsYellow) {
 				BlockPos BlockPos4 = new BlockPos(blockPos);
 				final AxisAlignedBB alignedBB = GetAxis(BlockPos4);
-				DrawPathBox(alignedBB, 0.5f, 0.5f, 0f, 0.5f);
+				DrawPathBox(alignedBB, 0.5f, 0.5f, 0f, 0.2f);
 			}
 
 			for (BlockPos blockPos : PositionsGreen) {
 				BlockPos BlockPos4 = new BlockPos(blockPos);
 				final AxisAlignedBB alignedBB = GetAxis(BlockPos4);
-				DrawPathBox(alignedBB, 0f, 1f, 0f, 0.5f);
+				DrawPathBox(alignedBB, 0f, 1f, 0f, 0.2f);
 			}
 		} catch (Exception e22) {
 			e22.printStackTrace();

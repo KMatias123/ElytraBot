@@ -8,7 +8,7 @@ import me.bebeli555.ElytraBot.Init;
 
 //Settings Object.
 public class SettingsInfo {
-	public static ArrayList<SettingsInfo> Settings = new ArrayList<SettingsInfo>();
+	public static ArrayList<SettingsInfo> Settings = new ArrayList<>();
 	public String name;
 	public Object value;
 	public Object defaultValue;
